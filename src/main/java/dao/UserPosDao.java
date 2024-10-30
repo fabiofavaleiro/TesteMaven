@@ -21,11 +21,10 @@ public class UserPosDao {
     public void salvar(UserPosJava userPosJava){
 
         try {
-            String sql = "insert into userposjava (id, nome, email) values (?,?,?)";
+            String sql = "insert into userposjava (nome, email) values (?,?)";
             PreparedStatement insert = connection.prepareStatement(sql);
-            insert.setLong(1, userPosJava.getId());
-            insert.setString(2,userPosJava.getNome());
-            insert.setString(3,userPosJava.getEmail());
+            insert.setString(1,userPosJava.getNome());
+            insert.setString(2,userPosJava.getEmail());
             insert.execute();
             connection.commit();
         } catch (Exception e) {
@@ -57,6 +56,46 @@ public class UserPosDao {
         return list;
     }
 
+
+    public UserPosJava buscar(Long id) throws Exception{
+        UserPosJava userPosJava1 = new UserPosJava();
+
+        String sql = "select * from userposjava where id = " + id;
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultado = statement.executeQuery();
+
+        while (resultado.next()){
+
+            userPosJava1.setId(resultado.getLong("id"));
+            userPosJava1.setNome(resultado.getString("nome"));
+            userPosJava1.setEmail(resultado.getString("email"));
+
+        }
+
+        return userPosJava1;
+    }
+
+    public void atualizar (UserPosJava userPosJava){
+        try {
+            String sql = "update userposjava set nome = ? where id = " + userPosJava.getId();
+
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, userPosJava.getNome());
+
+            statement.execute();
+            connection.commit();
+        } catch (Exception e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                e.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+
+
+    }
 
 
 }
