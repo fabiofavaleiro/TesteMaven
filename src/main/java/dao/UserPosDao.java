@@ -56,7 +56,6 @@ public class UserPosDao {
         return list;
     }
 
-
     public UserPosJava buscar(Long id) throws Exception{
         UserPosJava userPosJava1 = new UserPosJava();
 
@@ -97,5 +96,24 @@ public class UserPosDao {
 
     }
 
+    public void deletar(Long id){
+        try{
+
+            String sql = "delete from userposjava where id = " +id;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.execute();
+            connection.commit();
+
+        } catch (SQLException e) {
+
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            e.printStackTrace();
+        }
+
+    }
 
 }
