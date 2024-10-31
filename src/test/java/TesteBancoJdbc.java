@@ -1,6 +1,8 @@
 import conexaojdbc.SingleConnection;
 import dao.UserPosDao;
 import junit.framework.TestCase;
+import model.BeanUserFone;
+import model.Telefone;
 import model.UserPosJava;
 import org.junit.Test;
 
@@ -80,10 +82,44 @@ public class TesteBancoJdbc{
 
 
             UserPosDao dao = new UserPosDao();
-            dao.deletar(5L);
+            dao.deletar(3L);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Test
+    public void initInsertTelefone(){
+        Telefone telefone = new Telefone();
+
+        telefone.setNumero("(67) 3596-6733");
+        telefone.setTipo("Casa");
+        telefone.setUsuario(3L);
+
+        UserPosDao dao = new UserPosDao();
+        dao.salvarTelefone(telefone);
+
+    }
+
+    @Test
+    public void  cargaFoneUser(){
+        UserPosDao dao = new UserPosDao();
+
+        List<BeanUserFone> beanUserFones = dao.listaUserFone(1L);
+
+        for (BeanUserFone beanUserFone : beanUserFones){
+            System.out.println(beanUserFone);
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
+
+        }
+
+
+    }
+
+    @Test
+    public void deleteUserFone(){
+        UserPosDao dao = new UserPosDao();
+        dao.deleteFonesPorUser(3L);
+
+    }
 }
